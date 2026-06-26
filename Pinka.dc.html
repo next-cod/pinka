@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Pinka – сеть кофеен</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Cg%20fill='%23E7A9A6'%3E%3Cellipse%20cx='16'%20cy='8'%20rx='3'%20ry='6'/%3E%3Cellipse%20cx='16'%20cy='8'%20rx='3'%20ry='6'%20transform='rotate(45%2016%2016)'/%3E%3Cellipse%20cx='16'%20cy='8'%20rx='3'%20ry='6'%20transform='rotate(90%2016%2016)'/%3E%3Cellipse%20cx='16'%20cy='8'%20rx='3'%20ry='6'%20transform='rotate(135%2016%2016)'/%3E%3Cellipse%20cx='16'%20cy='8'%20rx='3'%20ry='6'%20transform='rotate(180%2016%2016)'/%3E%3Cellipse%20cx='16'%20cy='8'%20rx='3'%20ry='6'%20transform='rotate(225%2016%2016)'/%3E%3Cellipse%20cx='16'%20cy='8'%20rx='3'%20ry='6'%20transform='rotate(270%2016%2016)'/%3E%3Cellipse%20cx='16'%20cy='8'%20rx='3'%20ry='6'%20transform='rotate(315%2016%2016)'/%3E%3C/g%3E%3Ccircle%20cx='16'%20cy='16'%20r='4.2'%20fill='%23B5746E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#C79A92 #F2E1DB}
+  ::-webkit-scrollbar{width:12px;height:12px}
+  ::-webkit-scrollbar-track{background:#F2E1DB}
+  ::-webkit-scrollbar-thumb{background:#C79A92;border-radius:100px;border:3px solid #F2E1DB}
+  ::-webkit-scrollbar-thumb:hover{background:#A87E77}
+  body{margin:0;background:#FBF4F1}
+  ::selection{background:#E7C3BC;color:#34272A}
+  @keyframes pinka-rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+  @keyframes pinka-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+  /* ––– Розовый ховер по всему сайту ––– */
+  #pinka-root a,#pinka-root h1,#pinka-root h2,#pinka-root h3,
+  #pinka-root p,#pinka-root span,#pinka-root li{
+    transition:color .3s ease,background .35s ease}
+  /* весь текст и ссылки становятся чуть розовее при наведении */
+  #pinka-root a:hover,#pinka-root h1:hover,#pinka-root h2:hover,
+  #pinka-root h3:hover,#pinka-root p:hover,#pinka-root span:hover,
+  #pinka-root li:hover{color:#BE6A80 !important}
+  /* кнопки-таблетки меню – мягкий розовый фон, читаемый текст */
+  #pinka-root #menu button:hover{background:#F3D8D2 !important;color:#7E5256 !important}
+  /* CTA-кнопки: текст остаётся белым (фон розовеет через style-hover) */
+  #pinka-root a.pinka-cta:hover{color:#FFFDFC !important}
+  /* тёмный футер: текст уходит в светло-розовый, а не в тёмный */
+  #pinka-root footer a:hover,#pinka-root footer p:hover,
+  #pinka-root footer span:hover{color:#F3C9C0 !important}
+
+  /* ═══════════ АДАПТИВНОСТЬ ═══════════ */
+  /* гамбургер: скрыт на десктопе, превращается в крестик при открытии */
+  .pinka-nav-toggle{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;margin:0;padding:0}
+  .pinka-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:10px;cursor:pointer;border-radius:12px;flex:none;z-index:60;transition:background .25s ease}
+  .pinka-burger:hover{background:rgba(126,82,86,.08)}
+  #pinka-root .pinka-burger span{display:block;width:100%;height:2px;background:#34272A;border-radius:2px;transition:transform .3s ease,opacity .25s ease,background .25s ease}
+  .pinka-nav-toggle:checked ~ .pinka-burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .pinka-nav-toggle:checked ~ .pinka-burger span:nth-child(2){opacity:0}
+  .pinka-nav-toggle:checked ~ .pinka-burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+  /* ≤1100px – герой в одну колонку */
+  @media (max-width:1100px){
+    .pinka-hero-grid{grid-template-columns:1fr !important;gap:clamp(20px,4vw,40px) !important}
+    .pinka-hero-text{transform:none !important}
+    .pinka-hero-media{max-width:440px !important}
+  }
+  /* ≤920px – about/locations в одну колонку, десерты и футер в две */
+  @media (max-width:920px){
+    .pinka-about-grid{grid-template-columns:1fr !important}
+    .pinka-loc-grid{grid-template-columns:1fr !important}
+    .pinka-dessert-grid{grid-template-columns:repeat(2,1fr) !important}
+    .pinka-footer-grid{grid-template-columns:1fr 1fr !important;gap:clamp(26px,5vw,44px) !important}
+  }
+  /* ≤760px – мобильное меню-гамбургер */
+  @media (max-width:760px){
+    .pinka-burger{display:flex}
+    .pinka-nav-wrap{position:absolute;top:100%;left:0;right:0;flex-direction:column !important;align-items:flex-start !important;gap:0 !important;background:#FBF4F1;padding:8px clamp(20px,5vw,64px) 20px;box-shadow:0 18px 34px -22px rgba(126,82,86,.55);transform:translateY(-14px);opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease}
+    .pinka-nav-toggle:checked ~ .pinka-nav-wrap{opacity:1;transform:none;pointer-events:auto}
+    .pinka-nav-wrap a{width:100%;padding:13px 2px;font-size:16px !important;border-bottom:1px solid rgba(126,82,86,.1)}
+    .pinka-nav-wrap a.pinka-cta{width:auto;margin-top:14px;padding:13px 28px !important;border-bottom:none}
+  }
+  /* ≤620px – меню напитков и десерты в одну колонку */
+  @media (max-width:620px){
+    .pinka-menu-grid{grid-template-columns:1fr !important;gap:0 !important}
+    .pinka-dessert-grid{grid-template-columns:1fr !important}
+  }
+  /* ≤440px – футер в одну колонку, мельче типографика крупных блоков */
+  @media (max-width:440px){
+    .pinka-footer-grid{grid-template-columns:1fr !important}
+    .pinka-hero-text h1{font-size:clamp(38px,11.5vw,46px) !important}
+    #pinka-root #menu button{padding:9px 13px !important;font-size:13px !important}
+  }
+
+  /* единые состояния фокуса для клавиатуры (доступность + цельность) */
+  #pinka-root a:focus-visible,#pinka-root button:focus-visible{
+    outline:2px solid #AE6675;outline-offset:3px;border-radius:8px}
+  .pinka-nav-toggle:focus-visible ~ .pinka-burger{
+    outline:2px solid #AE6675;outline-offset:2px}
+
+  /* уважение к prefers-reduced-motion: гасим бесконечные/тяжёлые анимации */
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:.001s !important;animation-iteration-count:1 !important;
+      transition-duration:.01s !important;scroll-behavior:auto !important}
+  }
+</style>
+</helmet>
+
+<div id="pinka-root" style="font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#34272A;background:#FBF4F1;overflow-x:hidden;position:relative;-webkit-font-smoothing:antialiased">
+
+  <!-- ============ HEADER ============ -->
+  <header id="pinka-header" style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:26px clamp(20px,5vw,64px);background:#FBF4F1;transition:padding .5s cubic-bezier(.22,.61,.36,1),box-shadow .5s ease">
+    <a href="#top" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:30px;letter-spacing:.01em;color:#34272A;text-decoration:none;line-height:1">Pinka</a>
+    <input type="checkbox" id="pinka-nav-toggle" class="pinka-nav-toggle" aria-hidden="true">
+    <label for="pinka-nav-toggle" class="pinka-burger" aria-label="Открыть меню"><span></span><span></span><span></span></label>
+    <nav class="pinka-nav-wrap" style="display:flex;align-items:center;gap:clamp(14px,2.4vw,34px)">
+      <a href="#about" style="font-size:14px;font-weight:500;color:#5C4A4C;text-decoration:none;letter-spacing:.01em" class="pinka-nav">О нас</a>
+      <a href="#menu" style="font-size:14px;font-weight:500;color:#5C4A4C;text-decoration:none;letter-spacing:.01em" class="pinka-nav">Меню</a>
+      <a href="#desserts" style="font-size:14px;font-weight:500;color:#5C4A4C;text-decoration:none;letter-spacing:.01em" class="pinka-nav">Десерты</a>
+      <a href="#locations" style="font-size:14px;font-weight:500;color:#5C4A4C;text-decoration:none;letter-spacing:.01em" class="pinka-nav">Кофейни</a>
+    </nav>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="top" style="position:relative;min-height:100svh;display:flex;align-items:center;padding:clamp(120px,16vh,200px) clamp(20px,5vw,64px) clamp(60px,8vh,90px);overflow:hidden">
+    <div aria-hidden="true" style="position:absolute;top:-12%;right:-8%;width:46vw;height:46vw;max-width:680px;max-height:680px;background:radial-gradient(circle at 50% 50%,#F3D8D2 0%,rgba(243,216,210,0) 68%);filter:blur(6px);z-index:0"></div>
+    <div aria-hidden="true" style="position:absolute;bottom:-16%;left:-10%;width:40vw;height:40vw;max-width:560px;max-height:560px;background:radial-gradient(circle at 50% 50%,#F6E2DD 0%,rgba(246,226,221,0) 70%);z-index:0"></div>
+
+    <div class="pinka-hero-grid" style="position:relative;z-index:3;width:100%;max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr 1.14fr;gap:clamp(28px,5vw,72px);align-items:center">
+      <div class="pinka-hero-text" style="transform:translateY(-44px)">
+        <div data-reveal style="animation:pinka-rise .7s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 30%;margin:0 0 28px">
+          <span style="font-size:14px;color:#B08A86;white-space:nowrap">Розовая кофейня в Уфе</span>
+        </div>
+        <h1 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-style:italic;font-size:clamp(46px,7.2vw,108px);line-height:.98;letter-spacing:-.015em;margin:0;color:#34272A">Немного<br>нежности<br>каждый день</h1>
+
+        <div style="display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-top:44px">
+          <a href="#menu" style="font-size:15px;font-weight:500;color:#FFFDFC;background:#7E5256;text-decoration:none;padding:15px 32px;border-radius:100px;white-space:nowrap;transition:background .35s ease" class="pinka-cta" style-hover="background:#AE6675!important">Смотреть меню</a>
+          <a href="#locations" style="font-size:15px;font-weight:500;color:#7E5256;text-decoration:none;white-space:nowrap;transition:color .3s ease,transform .3s ease" style-hover="color:#BE6A80!important;transform:translateY(-2px)">Где нас найти</a>
+        </div>
+      </div>
+
+      <div style="position:relative">
+        <div class="pinka-hero-media" style="position:relative;width:100%;max-width:680px;margin:0 auto;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center">
+          <div aria-hidden="true" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-42%);width:88%;height:88%;border-radius:50%;background:radial-gradient(circle at 50% 50%,rgba(126,82,86,.26) 0%,rgba(126,82,86,.11) 42%,rgba(126,82,86,0) 70%);filter:blur(20px)"></div>
+          <img src="uploads/e48b9091-d0df-4520-9e36-1a769db96bad-Photoroom.webp" alt="Латте с латте-артом в виде цветка" style="position:relative;width:100%;height:auto;animation:pinka-spin 22s linear infinite" width="1254" height="1254" loading="eager" fetchpriority="high" decoding="async"/>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" style="scroll-margin-top:90px;padding:clamp(80px,12vh,150px) clamp(20px,5vw,64px)">
+    <div class="pinka-about-grid" style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(36px,6vw,90px);align-items:center">
+      <div data-reveal style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;position:relative">
+        <div style="position:relative;border-radius:40px;overflow:hidden;aspect-ratio:4/4.6;background:repeating-linear-gradient(135deg,#F1D7D1,#F1D7D1 11px,#F7E4DF 11px,#F7E4DF 22px);box-shadow:0 16px 40px -32px rgba(126,82,86,.22)">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(126,82,86,.6)">
+            <span style="font-family:'Courier New',monospace;font-size:12px">[ фото · бариста за стойкой ]</span>
+          </div>
+          <img src="uploads/pasted-1782474820113-0.webp" alt="Бариста за стойкой Pinka" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 38%" loading="lazy" decoding="async"/>
+        </div>
+      </div>
+      <div>
+        <span data-reveal style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;display:block;font-size:14px;color:#B08A86;margin-bottom:20px">О Pinka</span>
+        <h2 data-reveal data-delay="80" style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,3.6vw,52px);line-height:1.12;letter-spacing:-.01em;margin:0;color:#34272A">Мы придумали место, где можно выдохнуть – и остаться подольше.</h2>
+        <p data-reveal data-delay="160" style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;font-size:16.5px;line-height:1.7;color:#6B5759;margin:26px 0 0;max-width:520px">Pinka выросла из маленькой кофейни на Ленина в сеть из пяти точек. Мы сами обжариваем зёрна, взбиваем пенку до шёлковой текстуры и каждое утро печём десерты – чтобы у города было своё тёплое, чуть розовое место.</p>
+        <div data-reveal data-delay="240" style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;display:flex;justify-content:center;gap:clamp(32px,5vw,64px);margin-top:42px;flex-wrap:wrap">
+          <div style="text-align:center">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:58px;line-height:1;color:#A36A66">5</div>
+            <div style="font-size:14.5px;color:#8C7B79;margin-top:16px">кофеен в Уфе</div>
+          </div>
+          <div style="width:1px;background:rgba(126,82,86,.16)"></div>
+          <div style="text-align:center">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:58px;line-height:1;color:#A36A66">07:30</div>
+            <div style="font-size:14.5px;color:#8C7B79;margin-top:16px">открываемся</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MENU ============ -->
+  <section id="menu" style="scroll-margin-top:80px;background:#F6E7E2;padding:clamp(80px,12vh,150px) clamp(20px,5vw,64px)">
+    <div style="max-width:1100px;margin:0 auto">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:46px">
+        <div>
+          <span data-reveal style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;display:block;font-size:14px;color:#B08A86;margin-bottom:14px">Что в чашке</span>
+          <h2 data-reveal data-delay="80" style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;font-family:'Cormorant Garamond',serif;font-weight:500;font-style:italic;font-size:clamp(38px,5vw,72px);line-height:1;letter-spacing:-.01em;margin:0;color:#34272A">Меню</h2>
+        </div>
+        <div data-reveal data-delay="140" style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;display:flex;gap:8px;background:#FBF1ED;padding:6px;border-radius:100px">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+            <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="pinka-menu-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(40px,6vw,90px)">
+        <sc-for list="{{ currentDrinks }}" as="d" hint-placeholder-count="6">
+          <div style="display:flex;flex-direction:column;padding:20px 0;border-bottom:1px solid rgba(126,82,86,.13)">
+            <div style="display:flex;align-items:baseline;gap:12px">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:25px;color:#34272A;white-space:nowrap">{{ d.name }}</span>
+              <span style="flex:1;border-bottom:1px dotted rgba(126,82,86,.32);transform:translateY(-4px)"></span>
+              <span style="font-size:15px;font-weight:500;color:#7E5256;white-space:nowrap">{{ d.price }}</span>
+            </div>
+            <span style="font-size:13.5px;color:#9E7E7C;margin-top:6px;line-height:1.5">{{ d.desc }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DESSERTS ============ -->
+  <section id="desserts" style="scroll-margin-top:80px;padding:clamp(80px,12vh,150px) clamp(20px,5vw,64px)">
+    <div style="max-width:1320px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:54px">
+        <span data-reveal style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;display:block;font-size:14px;color:#B08A86;margin-bottom:14px">Из печи каждое утро</span>
+        <h2 data-reveal data-delay="80" style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(38px,5vw,72px);line-height:1;letter-spacing:-.01em;margin:0;color:#34272A">Десерты, к которым привязываешься</h2>
+        <p data-reveal data-delay="160" style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;font-size:16px;line-height:1.6;color:#6B5759;max-width:580px;margin:22px auto 0">Это наше постоянное меню. В каждой кофейне к нему добавляются свои десерты, поэтому в каждой точке выбор немного разный – и всегда есть что-то новое.</p>
+      </div>
+      <div class="pinka-dessert-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2vw,30px)">
+        <sc-for list="{{ desserts }}" as="d" hint-placeholder-count="6">
+          <div data-reveal data-delay="{{ d.delay }}" style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%">
+            <div style="position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/3.4;background:repeating-linear-gradient(135deg,#F1D7D1,#F1D7D1 10px,#F7E4DF 10px,#F7E4DF 20px);transition:transform .55s cubic-bezier(.22,.61,.36,1),box-shadow .55s ease" style-hover="transform:translateY(-1px);box-shadow:0 12px 26px -22px rgba(126,82,86,.2)">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(126,82,86,.55)">
+                <span style="font-family:'Courier New',monospace;font-size:11.5px">[ фото · {{ d.name }} ]</span>
+              </div>
+              {{ d.media }}
+            </div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:16px">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#34272A">{{ d.name }}</span>
+              <span style="font-size:15px;font-weight:500;color:#7E5256">{{ d.price }}</span>
+            </div>
+            <p style="font-size:13.5px;color:#9E7E7C;margin:6px 0 0;line-height:1.55">{{ d.desc }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOCATIONS ============ -->
+  <section id="locations" style="scroll-margin-top:80px;background:#F6E7E2;padding:clamp(80px,12vh,150px) clamp(20px,5vw,64px)">
+    <div style="max-width:1320px;margin:0 auto">
+      <div style="margin-bottom:50px;max-width:620px">
+        <h2 data-reveal data-delay="80" style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(38px,5vw,72px);line-height:1.02;letter-spacing:-.01em;margin:0;color:#34272A">Пять кофеен в Уфе</h2>
+      </div>
+
+      <div class="pinka-loc-grid" style="display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,3vw,44px);align-items:stretch">
+        <!-- map -->
+        <div data-reveal style="animation:pinka-rise .8s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 24%;position:relative;border-radius:26px;overflow:hidden;min-height:460px;background:#EFDDD8;box-shadow:0 14px 38px -34px rgba(126,82,86,.18)">
+          <iframe title="Карта кофеен Pinka в Уфе" src="{{ mapSrc }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="position:absolute;top:-150px;left:0;width:100%;height:calc(100% + 272px);border:0;filter:saturate(.92) contrast(1.02)"></iframe>
+          <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;border-radius:26px;box-shadow:inset 0 0 0 1px rgba(126,82,86,.12)"></div>
+          <div style="position:absolute;top:0;left:0;width:min(290px,74%);background:#FFFDFC;border-radius:26px 0 20px 0;padding:20px 26px 22px 24px;box-shadow:6px 8px 22px -16px rgba(126,82,86,.22)">
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:30px;color:#A36A66;line-height:1">{{ activeNo }}</span>
+              <span style="width:1px;height:30px;background:rgba(126,82,86,.16)"></span>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:23px;color:#34272A;line-height:1.05">{{ activeArea }}</div>
+            </div>
+            <div style="font-size:14px;color:#5C4A4C;margin-top:15px">{{ activeAddress }}</div>
+            <div style="font-size:13px;color:#9E7E7C;margin-top:5px">{{ activeHours }}</div>
+          </div>
+        </div>
+        <!-- list -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ locs }}" as="l" hint-placeholder-count="5">
+            <button onMouseEnter="{{ l.onClick }}" onClick="{{ l.onClick }}" style="{{ l.cardStyle }}">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+                <span style="font-family:'Cormorant Garamond',serif;font-size:23px;color:#34272A">{{ l.area }}</span>
+                <span style="{{ l.num }}">{{ l.no }}</span>
+              </div>
+              <div style="font-size:14.5px;color:#5C4A4C;margin-top:4px">{{ l.address }}</div>
+              <div style="font-size:13px;color:#9E7E7C;margin-top:7px">{{ l.hours }}</div>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSING ============ -->
+  <section style="position:relative;overflow:hidden;min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:clamp(56px,10vh,120px) clamp(20px,5vw,64px);background-image:url('uploads/pasted-1782475047711-0.webp');background-size:cover;background-position:center">
+    <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(248,233,227,.26),rgba(239,214,208,.42));pointer-events:none"></div>
+    <div data-reveal style="animation:pinka-rise .9s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 45%;position:relative;width:100%;max-width:660px;padding:clamp(52px,6vw,72px) clamp(40px,5.5vw,72px);border-radius:34px;background:rgba(250,241,237,.55);-webkit-backdrop-filter:blur(18px) saturate(125%);backdrop-filter:blur(18px) saturate(125%);box-shadow:0 30px 72px -46px rgba(82,50,45,.5)">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-style:italic;font-size:clamp(38px,5vw,72px);line-height:1.04;letter-spacing:-.016em;margin:0;color:#34272A">Ждём вас на чашечку</h2>
+      <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.7;color:#5C4A4C;margin:22px auto 0;max-width:440px">Заходите одна или с подругами – нальём согревающего кофе, угостим свежим десертом и оставим для вас уютный уголок. У нас по-домашнему тепло.</p>
+      <div style="display:flex;justify-content:center;margin-top:28px">
+        <span style="font-size:14px;color:#7E5256">ежедневно 07:30 – 22:00</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background:#3F2A2D;color:#EAD7D2;padding:clamp(60px,9vh,96px) clamp(20px,5vw,64px) 36px">
+    <div style="max-width:1320px;margin:0 auto">
+      <div class="pinka-footer-grid" style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:clamp(28px,4vw,56px)">
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:34px;line-height:1;color:#FBF1ED">Pinka</div>
+          <p style="font-size:14.5px;line-height:1.65;color:#C6ADA8;margin:18px 0 0;max-width:280px">Розовая кофейня в Уфе. Тёплый свет, мягкая пенка и десерты ручной работы – пять адресов по городу.</p>
+        </div>
+        <div>
+          <div style="font-size:13px;color:#A98C87;margin-bottom:16px">Разделы</div>
+          <a href="#about" style="display:block;color:#EAD7D2;text-decoration:none;font-size:14.5px;margin-bottom:11px" class="pinka-fnav">О нас</a>
+          <a href="#menu" style="display:block;color:#EAD7D2;text-decoration:none;font-size:14.5px;margin-bottom:11px" class="pinka-fnav">Меню</a>
+          <a href="#desserts" style="display:block;color:#EAD7D2;text-decoration:none;font-size:14.5px;margin-bottom:11px" class="pinka-fnav">Десерты</a>
+          <a href="#locations" style="display:block;color:#EAD7D2;text-decoration:none;font-size:14.5px" class="pinka-fnav">Кофейни</a>
+        </div>
+        <div>
+          <div style="font-size:13px;color:#A98C87;margin-bottom:16px">Соцсети</div>
+          <a href="#" style="display:block;color:#EAD7D2;text-decoration:none;font-size:14.5px;margin-bottom:11px" class="pinka-fnav">Telegram</a>
+          <a href="#" style="display:block;color:#EAD7D2;text-decoration:none;font-size:14.5px;margin-bottom:11px" class="pinka-fnav">ВКонтакте</a>
+          <a href="#" style="display:block;color:#EAD7D2;text-decoration:none;font-size:14.5px" class="pinka-fnav">Яндекс Карты</a>
+        </div>
+        <div>
+          <div style="font-size:13px;color:#A98C87;margin-bottom:16px">Связаться</div>
+          <a href="tel:+73472000000" style="display:block;font-family:'Cormorant Garamond',serif;font-size:24px;color:#FBF1ED;text-decoration:none;margin-bottom:8px">+7 347 200-00-00</a>
+          <a href="mailto:hi@pinka.coffee" style="display:block;color:#C6ADA8;text-decoration:none;font-size:14.5px">hi@pinka.coffee</a>
+          <div style="font-size:13.5px;color:#A98C87;margin-top:14px">ежедневно 07:30 – 22:00</div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;line-height:1.65;color:#9C817C;margin:clamp(40px,6vh,64px) 0 0;padding-top:24px;border-top:1px solid rgba(234,215,210,.16);max-width:980px">
+        Это не настоящий сайт. Демонстрационный пример для портфолио, сделанный, чтобы показать дизайн и вёрстку. Кофейня «Pinka» вымышлена: все названия, адреса, контакты, цены и тексты придуманы исключительно для оформления, а любые совпадения с реальными местами и людьми случайны. Сайт не оказывает услуг, не принимает заказы и не собирает персональные данные, не является публичной офертой или рекламой.
+      </p>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { tab: 'coffee', activeLoc: 0 };
+
+  constructor(props){
+    super(props);
+    this.menu = {
+      coffee: [
+        { name: 'Раф розовый', price: '290 ₽', desc: 'сливки, белый шоколад, лепестки розы' },
+        { name: 'Капучино', price: '230 ₽', desc: 'классика на шёлковой пенке' },
+        { name: 'Флэт уайт', price: '250 ₽', desc: 'двойной эспрессо, тонкий слой молока' },
+        { name: 'Латте', price: '250 ₽', desc: 'мягкий, на выбор молока' },
+        { name: 'Фильтр', price: '210 ₽', desc: 'зерно недели, V60' },
+        { name: 'Эспрессо', price: '150 ₽', desc: 'наша фирменная обжарка' },
+      ],
+      other: [
+        { name: 'Матча латте', price: '280 ₽', desc: 'церемониальная матча, тёплое молоко' },
+        { name: 'Какао', price: '240 ₽', desc: 'на топлёном молоке с маршмеллоу' },
+        { name: 'Розовый чай', price: '220 ₽', desc: 'каркаде, роза, немного мёда' },
+        { name: 'Чай листовой', price: '190 ₽', desc: 'чёрный, зелёный или травяной' },
+        { name: 'Тёплый банан', price: '260 ₽', desc: 'банан, миндальное молоко, корица' },
+        { name: 'Голден милк', price: '270 ₽', desc: 'куркума, имбирь, кокосовое молоко' },
+      ],
+      seasonal: [
+        { name: 'Клубничный раф', price: '320 ₽', desc: 'сезон местной клубники' },
+        { name: 'Лавандовый латте', price: '300 ₽', desc: 'нежный цвет и тонкий аромат' },
+        { name: 'Малиновый матча', price: '330 ₽', desc: 'матча и малиновое пюре слоями' },
+        { name: 'Грушевый капучино', price: '290 ₽', desc: 'пряная груша, мягкая пенка' },
+      ],
+    };
+
+    this.dessertData = [
+      { name: 'Чизкейк «Роза»', price: '320 ₽', desc: 'нежный, с розовой глазурью', delay: '0', img: 'uploads/5678fa8b-4b34-4294-9dad-0775fbaefee3.webp', objPos: '50% 60%' },
+      { name: 'Павлова', price: '290 ₽', desc: 'безе, крем и свежая малина', delay: '90', img: 'uploads/e7ebb389-8209-41fd-8132-4a2ba6d54efc.webp', objPos: '50% 60%' },
+      { name: 'Медовик', price: '280 ₽', desc: 'тонкие коржи, сметанный крем', delay: '180', img: 'uploads/3e9f4883-bfc1-4124-9f22-faa3e57f840b.webp' },
+      { name: 'Эклер фисташковый', price: '250 ₽', desc: 'хрустящий, с фисташковым кремом', delay: '0', img: 'uploads/08730d82-a538-40d5-a146-338cfea72a53.webp' },
+      { name: 'Тарт лимонный', price: '260 ₽', desc: 'песочная основа, лимонный курд', delay: '90', img: 'uploads/60c40877-f2f9-4648-94e5-4c3303df68a0.webp' },
+      { name: 'Морковный торт', price: '270 ₽', desc: 'пряный бисквит, крем-чиз', delay: '180', img: 'uploads/a01d7e4b-3036-4a1d-9daa-6cff15b50f33.webp' },
+    ];
+
+    this.locationData = [
+      { area: 'Центр', no: '01', address: 'ул. Ленина, 28', hours: 'ежедневно 07:30 – 22:00', left: '40%', top: '54%' },
+      { area: 'Зелёная роща', no: '02', address: 'проспект Октября, 34', hours: 'ежедневно 08:00 – 23:00', left: '60%', top: '30%' },
+      { area: 'Сипайлово', no: '03', address: 'ул. Маршала Жукова, 7', hours: 'ежедневно 09:00 – 22:00', left: '75%', top: '20%' },
+      { area: 'Гостиный двор', no: '04', address: 'Верхнеторговая пл., 1', hours: 'ежедневно 10:00 – 22:00', left: '30%', top: '38%' },
+      { area: 'Дёма', no: '05', address: 'ул. Левитана, 16', hours: 'ежедневно 08:00 – 21:00', left: '20%', top: '74%' },
+    ];
+
+    this._revealScan = this._revealScan.bind(this);
+    this._onScroll = this._onScroll.bind(this);
+  }
+
+  renderVals() {
+    const tab = this.state.tab;
+    const tabDefs = [
+      { key: 'coffee', label: 'Кофе' },
+      { key: 'other', label: 'Не кофе' },
+      { key: 'seasonal', label: 'Сезонное' },
+    ];
+    const baseTab = {
+      border: 'none', cursor: 'pointer', fontFamily: "'Manrope',sans-serif",
+      fontSize: '14px', fontWeight: 500, padding: '10px 20px', borderRadius: '100px',
+      transition: 'background .35s ease,color .35s ease', whiteSpace: 'nowrap',
+    };
+    const tabs = tabDefs.map(t => ({
+      label: t.label,
+      onClick: () => this.setState({ tab: t.key }),
+      style: t.key === tab
+        ? { ...baseTab, background: '#7E5256', color: '#FBF1ED' }
+        : { ...baseTab, background: 'transparent', color: '#8C7B79' },
+    }));
+
+    const active = this.state.activeLoc;
+    const locs = this.locationData.map((l, i) => {
+      const on = i === active;
+      return {
+        ...l,
+        onClick: () => this.setState({ activeLoc: i }),
+        pinStyle: {
+          position: 'absolute', left: l.left, top: l.top, transform: 'translate(-50%,-50%)',
+          display: 'flex', alignItems: 'center', gap: '8px', background: on ? '#7E5256' : '#FFFDFC',
+          border: 'none', borderRadius: '100px', padding: on ? '8px 15px 8px 9px' : '7px',
+          cursor: 'pointer', boxShadow: on ? '0 7px 16px -12px rgba(126,82,86,.3)' : '0 4px 10px -7px rgba(126,82,86,.24)',
+          transition: 'all .4s cubic-bezier(.22,.61,.36,1)', zIndex: on ? '4' : '3',
+        },
+        pinDot: {
+          width: '13px', height: '13px', borderRadius: '50%', flex: 'none',
+          background: on ? '#F7C9C0' : '#D2998F',
+          boxShadow: on ? '0 0 0 4px rgba(247,201,192,.3)' : 'none',
+          transition: 'all .4s ease',
+        },
+        pinLabel: {
+          fontSize: '13px', fontWeight: 500, color: '#FBF1ED', whiteSpace: 'nowrap',
+          maxWidth: on ? '160px' : '0', overflow: 'hidden',
+          opacity: on ? '1' : '0', transition: 'all .4s cubic-bezier(.22,.61,.36,1)',
+        },
+        short: l.area,
+        cardStyle: {
+          textAlign: 'left', cursor: 'pointer', border: '1px solid ' + (on ? 'rgba(126,82,86,.4)' : 'rgba(126,82,86,.12)'),
+          background: on ? '#FFFDFC' : 'rgba(255,253,252,.5)', borderRadius: '18px', padding: '18px 20px',
+          fontFamily: "'Manrope',sans-serif", transition: 'all .4s cubic-bezier(.22,.61,.36,1)',
+          boxShadow: on ? '0 9px 24px -20px rgba(126,82,86,.26)' : 'none',
+          transform: on ? 'translateX(4px)' : 'none',
+        },
+        num: {
+          fontFamily: "'Cormorant Garamond',serif", fontSize: '18px',
+          color: on ? '#A36A66' : '#C9B2AE', transition: 'color .4s ease',
+        },
+      };
+    });
+
+    const al = this.locationData[this.state.activeLoc] || this.locationData[0];
+    const mapSrc = 'https://maps.google.com/maps?q=' + encodeURIComponent(al.address + ', Уфа') + '&z=15&hl=ru&output=embed';
+
+    return {
+      tabs, currentDrinks: this.menu[tab], locs,
+      desserts: this.dessertData.map(d => ({ ...d, media: d.img ? React.createElement('img', { src: d.img, alt: d.name, loading: 'lazy', decoding: 'async', style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: d.objPos || 'center' } }) : null })),
+      mapSrc, activeArea: al.area, activeAddress: al.address, activeNo: al.no, activeHours: al.hours,
+    };
+  }
+
+  componentDidMount() {
+    // reveal is handled purely in CSS via animation-timeline: view() (capture-safe, no-JS-safe)
+
+    // header on scroll
+    this._header = document.getElementById('pinka-header');
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._onScroll();
+
+    // мобильное меню: закрывать по клику на ссылку и при переходе на десктоп
+    this._navToggle = document.getElementById('pinka-nav-toggle');
+    this._navLinks = Array.from(document.querySelectorAll('.pinka-nav-wrap a'));
+    this._closeNav = () => { if (this._navToggle) this._navToggle.checked = false; };
+    this._navLinks.forEach((a) => a.addEventListener('click', this._closeNav));
+    this._onResizeNav = () => { if (window.innerWidth > 760) this._closeNav(); };
+    window.addEventListener('resize', this._onResizeNav, { passive: true });
+  }
+
+  _revealScan() {
+    const els = document.querySelectorAll('#pinka-root [data-reveal]');
+    const vh = window.innerHeight || 800;
+    els.forEach((el) => {
+      if (el.dataset.shown) return;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh * 0.9 && r.bottom > -40) {
+        const d = parseInt(el.getAttribute('data-delay') || '0', 10);
+        el.style.transitionDelay = d + 'ms';
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        el.dataset.shown = '1';
+      }
+    });
+  }
+
+  _onScroll() {
+    if (!this._header) return;
+    if (window.scrollY > 36) {
+      this._header.style.background = '#FBF4F1';
+      this._header.style.boxShadow = '0 6px 22px -18px rgba(126,82,86,.34)';
+      this._header.style.padding = '15px clamp(20px,5vw,64px)';
+    } else {
+      this._header.style.background = '#FBF4F1';
+      this._header.style.boxShadow = 'none';
+      this._header.style.padding = '26px clamp(20px,5vw,64px)';
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('scroll', this._revealScan);
+    window.removeEventListener('resize', this._revealScan);
+    window.removeEventListener('resize', this._onResizeNav);
+    if (this._navLinks) this._navLinks.forEach((a) => a.removeEventListener('click', this._closeNav));
+  }
+}
+</script>
+</body>
+</html>

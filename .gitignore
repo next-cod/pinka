@@ -1,0 +1,7 @@
+# dev artifacts
+screenshots/
+.thumbnail
+.vercel/
+
+# original/unused source images — the site serves optimized .webp
+uploads/*.png
