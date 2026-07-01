@@ -54,9 +54,13 @@
   /* ≤1100px – герой в одну колонку */
   @media (max-width:1100px){
     #top{min-height:auto !important;padding-top:clamp(96px,12vh,140px) !important;padding-bottom:clamp(20px,3vh,36px) !important}
+    .pinka-hero-glow{display:none !important}
     .pinka-hero-grid{grid-template-columns:1fr !important;gap:clamp(12px,2.5vw,24px) !important}
-    .pinka-hero-text{transform:none !important}
-    .pinka-hero-media{max-width:150px !important}
+    .pinka-hero-text{transform:none !important;text-align:center !important}
+    .pinka-hero-h1{font-size:clamp(52px,15vw,80px) !important}
+    .pinka-hero-actions{justify-content:center !important}
+    .pinka-hero-media{max-width:225px !important}
+    #about{padding-top:clamp(44px,7vh,72px) !important}
   }
   /* ≤920px – about/locations в одну колонку, десерты и футер в две */
   @media (max-width:920px){
@@ -81,7 +85,6 @@
   /* ≤440px – футер в одну колонку, мельче типографика крупных блоков */
   @media (max-width:440px){
     .pinka-footer-grid{grid-template-columns:1fr !important}
-    .pinka-hero-text h1{font-size:clamp(38px,11.5vw,46px) !important}
     #pinka-root #menu button{padding:9px 13px !important;font-size:13px !important}
   }
 
@@ -111,17 +114,17 @@
 
   <!-- ============ HERO ============ -->
   <section id="top" style="position:relative;min-height:100svh;display:flex;align-items:center;padding:clamp(120px,16vh,200px) clamp(20px,5vw,64px) clamp(60px,8vh,90px);overflow:hidden">
-    <div aria-hidden="true" style="position:absolute;top:-12%;right:-8%;width:46vw;height:46vw;max-width:680px;max-height:680px;background:radial-gradient(circle at 50% 50%,#F3D8D2 0%,rgba(243,216,210,0) 68%);filter:blur(6px);z-index:0"></div>
-    <div aria-hidden="true" style="position:absolute;bottom:-16%;left:-10%;width:40vw;height:40vw;max-width:560px;max-height:560px;background:radial-gradient(circle at 50% 50%,#F6E2DD 0%,rgba(246,226,221,0) 70%);z-index:0"></div>
+    <div aria-hidden="true" class="pinka-hero-glow" style="position:absolute;top:-12%;right:-8%;width:46vw;height:46vw;max-width:680px;max-height:680px;background:radial-gradient(circle at 50% 50%,#F3D8D2 0%,rgba(243,216,210,0) 68%);filter:blur(6px);z-index:0"></div>
+    <div aria-hidden="true" class="pinka-hero-glow" style="position:absolute;bottom:-16%;left:-10%;width:40vw;height:40vw;max-width:560px;max-height:560px;background:radial-gradient(circle at 50% 50%,#F6E2DD 0%,rgba(246,226,221,0) 70%);z-index:0"></div>
 
     <div class="pinka-hero-grid" style="position:relative;z-index:3;width:100%;max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr 1.14fr;gap:clamp(28px,5vw,72px);align-items:center">
       <div class="pinka-hero-text" style="transform:translateY(-44px)">
         <div data-reveal style="animation:pinka-rise .7s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 30%;margin:0 0 28px">
           <span style="font-size:14px;color:#B08A86;white-space:nowrap">Розовые кофейни в Уфе</span>
         </div>
-        <h1 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-style:italic;font-size:clamp(46px,7.2vw,108px);line-height:.98;letter-spacing:-.015em;margin:0;color:#34272A">Немного<br>нежности<br>каждый день</h1>
+        <h1 class="pinka-hero-h1" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-style:italic;font-size:clamp(46px,7.2vw,108px);line-height:.98;letter-spacing:-.015em;margin:0;color:#34272A">Немного<br>нежности<br>каждый день</h1>
 
-        <div style="display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-top:44px">
+        <div class="pinka-hero-actions" style="display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-top:44px">
           <a href="#menu" style="font-size:15px;font-weight:500;color:#FFFDFC;background:#7E5256;text-decoration:none;padding:15px 32px;border-radius:100px;white-space:nowrap;transition:background .35s ease" class="pinka-cta" style-hover="background:#AE6675!important">Смотреть меню</a>
           <a href="#locations" style="font-size:15px;font-weight:500;color:#7E5256;text-decoration:none;white-space:nowrap;transition:color .3s ease,transform .3s ease" style-hover="color:#BE6A80!important;transform:translateY(-2px)">Где нас найти</a>
         </div>
