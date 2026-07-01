@@ -26,37 +26,37 @@
   @keyframes pinka-rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
   @keyframes pinka-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
-  /* ––– Розовый ховер по всему сайту ––– */
-  #pinka-root a,#pinka-root h1,#pinka-root h2,#pinka-root h3,
-  #pinka-root p,#pinka-root span,#pinka-root li{
-    transition:color .3s ease,background .35s ease}
-  /* весь текст и ссылки становятся чуть розовее при наведении */
-  #pinka-root a:hover,#pinka-root h1:hover,#pinka-root h2:hover,
-  #pinka-root h3:hover,#pinka-root p:hover,#pinka-root span:hover,
-  #pinka-root li:hover{color:#BE6A80 !important}
+  /* ––– Розовый ховер только на кликабельных ссылках ––– */
+  #pinka-root a{transition:color .4s ease,background .4s ease}
+  #pinka-root a:hover{color:#BE6A80 !important}
   /* кнопки-таблетки меню – мягкий розовый фон, читаемый текст */
   #pinka-root #menu button:hover{background:#F3D8D2 !important;color:#7E5256 !important}
   /* CTA-кнопки: текст остаётся белым (фон розовеет через style-hover) */
   #pinka-root a.pinka-cta:hover{color:#FFFDFC !important}
-  /* тёмный футер: текст уходит в светло-розовый, а не в тёмный */
-  #pinka-root footer a:hover,#pinka-root footer p:hover,
-  #pinka-root footer span:hover{color:#F3C9C0 !important}
+  /* тёмный футер: ссылки уходят в светло-розовый, а не в тёмный */
+  #pinka-root footer a:hover{color:#F3C9C0 !important}
+  /* дисклеймер в футере: скрыт по умолчанию, открывается кликом по summary */
+  #pinka-root footer summary{list-style:none}
+  #pinka-root footer summary::-webkit-details-marker{display:none}
+  #pinka-root footer summary:hover{color:#F3C9C0 !important}
+  #pinka-root footer details:not([open]) p{display:none}
+  #pinka-root footer details[open] .pinka-disclaimer-arrow{transform:rotate(180deg)}
 
   /* ═══════════ АДАПТИВНОСТЬ ═══════════ */
-  /* гамбургер: скрыт на десктопе, превращается в крестик при открытии */
+  /* гамбургер: скрыт на десктопе, простое переключение на крестик без наворотов */
   .pinka-nav-toggle{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;margin:0;padding:0}
-  .pinka-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:10px;cursor:pointer;border-radius:12px;flex:none;z-index:60;transition:background .25s ease}
-  .pinka-burger:hover{background:rgba(126,82,86,.08)}
-  #pinka-root .pinka-burger span{display:block;width:100%;height:2px;background:#34272A;border-radius:2px;transition:transform .3s ease,opacity .25s ease,background .25s ease}
-  .pinka-nav-toggle:checked ~ .pinka-burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .pinka-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:10px;cursor:pointer;border-radius:12px;flex:none;z-index:60}
+  #pinka-root .pinka-burger span{display:block;width:100%;height:2px;background:#34272A;border-radius:2px}
+  .pinka-nav-toggle:checked ~ .pinka-burger span:nth-child(1){transform:translateY(7px)}
   .pinka-nav-toggle:checked ~ .pinka-burger span:nth-child(2){opacity:0}
-  .pinka-nav-toggle:checked ~ .pinka-burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .pinka-nav-toggle:checked ~ .pinka-burger span:nth-child(3){transform:translateY(-7px)}
 
   /* ≤1100px – герой в одну колонку */
   @media (max-width:1100px){
-    .pinka-hero-grid{grid-template-columns:1fr !important;gap:clamp(20px,4vw,40px) !important}
+    #top{min-height:auto !important;padding-top:clamp(96px,12vh,140px) !important;padding-bottom:clamp(20px,3vh,36px) !important}
+    .pinka-hero-grid{grid-template-columns:1fr !important;gap:clamp(12px,2.5vw,24px) !important}
     .pinka-hero-text{transform:none !important}
-    .pinka-hero-media{max-width:440px !important}
+    .pinka-hero-media{max-width:150px !important}
   }
   /* ≤920px – about/locations в одну колонку, десерты и футер в две */
   @media (max-width:920px){
@@ -68,8 +68,8 @@
   /* ≤760px – мобильное меню-гамбургер */
   @media (max-width:760px){
     .pinka-burger{display:flex}
-    .pinka-nav-wrap{position:absolute;top:100%;left:0;right:0;flex-direction:column !important;align-items:flex-start !important;gap:0 !important;background:#FBF4F1;padding:8px clamp(20px,5vw,64px) 20px;box-shadow:0 18px 34px -22px rgba(126,82,86,.55);transform:translateY(-14px);opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease}
-    .pinka-nav-toggle:checked ~ .pinka-nav-wrap{opacity:1;transform:none;pointer-events:auto}
+    .pinka-nav-wrap{position:absolute;top:100%;left:0;right:0;flex-direction:column !important;align-items:flex-start !important;gap:0 !important;background:#FBF4F1;padding:8px clamp(20px,5vw,64px) 20px;border-bottom:1px solid rgba(126,82,86,.14);opacity:0;pointer-events:none;transition:opacity .2s ease}
+    .pinka-nav-toggle:checked ~ .pinka-nav-wrap{opacity:1;pointer-events:auto}
     .pinka-nav-wrap a{width:100%;padding:13px 2px;font-size:16px !important;border-bottom:1px solid rgba(126,82,86,.1)}
     .pinka-nav-wrap a.pinka-cta{width:auto;margin-top:14px;padding:13px 28px !important;border-bottom:none}
   }
@@ -91,12 +91,6 @@
   .pinka-nav-toggle:focus-visible ~ .pinka-burger{
     outline:2px solid #AE6675;outline-offset:2px}
 
-  /* уважение к prefers-reduced-motion: гасим бесконечные/тяжёлые анимации */
-  @media (prefers-reduced-motion: reduce){
-    *,*::before,*::after{
-      animation-duration:.001s !important;animation-iteration-count:1 !important;
-      transition-duration:.01s !important;scroll-behavior:auto !important}
-  }
 </style>
 </helmet>
 
@@ -123,7 +117,7 @@
     <div class="pinka-hero-grid" style="position:relative;z-index:3;width:100%;max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr 1.14fr;gap:clamp(28px,5vw,72px);align-items:center">
       <div class="pinka-hero-text" style="transform:translateY(-44px)">
         <div data-reveal style="animation:pinka-rise .7s cubic-bezier(.22,.61,.36,1) both;animation-timeline:view();animation-range:entry 0% cover 30%;margin:0 0 28px">
-          <span style="font-size:14px;color:#B08A86;white-space:nowrap">Розовая кофейня в Уфе</span>
+          <span style="font-size:14px;color:#B08A86;white-space:nowrap">Розовые кофейни в Уфе</span>
         </div>
         <h1 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-style:italic;font-size:clamp(46px,7.2vw,108px);line-height:.98;letter-spacing:-.015em;margin:0;color:#34272A">Немного<br>нежности<br>каждый день</h1>
 
@@ -136,7 +130,7 @@
       <div style="position:relative">
         <div class="pinka-hero-media" style="position:relative;width:100%;max-width:680px;margin:0 auto;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center">
           <div aria-hidden="true" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-42%);width:88%;height:88%;border-radius:50%;background:radial-gradient(circle at 50% 50%,rgba(126,82,86,.26) 0%,rgba(126,82,86,.11) 42%,rgba(126,82,86,0) 70%);filter:blur(20px)"></div>
-          <img src="uploads/e48b9091-d0df-4520-9e36-1a769db96bad-Photoroom.webp" alt="Латте с латте-артом в виде цветка" style="position:relative;width:100%;height:auto;animation:pinka-spin 22s linear infinite" width="1254" height="1254" loading="eager" fetchpriority="high" decoding="async"/>
+          <img src="uploads/e48b9091-d0df-4520-9e36-1a769db96bad-Photoroom.webp" alt="Латте с латте-артом в виде цветка" style="position:relative;top:-4%;width:87%;height:auto;animation:pinka-spin 22s linear infinite" width="1254" height="1254" loading="eager" fetchpriority="high" decoding="async"/>
         </div>
       </div>
     </div>
@@ -276,7 +270,7 @@
       <div class="pinka-footer-grid" style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:clamp(28px,4vw,56px)">
         <div>
           <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:34px;line-height:1;color:#FBF1ED">Pinka</div>
-          <p style="font-size:14.5px;line-height:1.65;color:#C6ADA8;margin:18px 0 0;max-width:280px">Розовая кофейня в Уфе. Тёплый свет, мягкая пенка и десерты ручной работы – пять адресов по городу.</p>
+          <p style="font-size:14.5px;line-height:1.65;color:#C6ADA8;margin:18px 0 0;max-width:280px">Розовые кофейни в Уфе. Тёплый свет, мягкая пенка и десерты ручной работы – пять адресов по городу.</p>
         </div>
         <div>
           <div style="font-size:13px;color:#A98C87;margin-bottom:16px">Разделы</div>
@@ -298,9 +292,12 @@
           <div style="font-size:13.5px;color:#A98C87;margin-top:14px">ежедневно 07:30 – 22:00</div>
         </div>
       </div>
-      <p style="font-size:12.5px;line-height:1.65;color:#9C817C;margin:clamp(40px,6vh,64px) 0 0;padding-top:24px;border-top:1px solid rgba(234,215,210,.16);max-width:980px">
-        Это не настоящий сайт. Демонстрационный пример для портфолио, сделанный, чтобы показать дизайн и вёрстку. Кофейня «Pinka» вымышлена: все названия, адреса, контакты, цены и тексты придуманы исключительно для оформления, а любые совпадения с реальными местами и людьми случайны. Сайт не оказывает услуг, не принимает заказы и не собирает персональные данные, не является публичной офертой или рекламой.
-      </p>
+      <details class="pinka-disclaimer" style="margin:clamp(40px,6vh,64px) 0 0;padding-top:24px;border-top:1px solid rgba(234,215,210,.16)">
+        <summary onclick="event.preventDefault();this.parentElement.open=!this.parentElement.open" style="cursor:pointer;font-size:12.5px;color:#A98C87;display:inline-flex;align-items:center;gap:6px;transition:color .3s ease">Дисклеймер<span class="pinka-disclaimer-arrow" style="display:inline-block;font-size:10px;transition:transform .3s ease">▾</span></summary>
+        <p style="font-size:12.5px;line-height:1.65;color:#9C817C;margin:14px 0 0;max-width:980px">
+          Это не настоящий сайт. Демонстрационный пример для портфолио, сделанный, чтобы показать дизайн и вёрстку. Кофейня «Pinka» вымышлена: все названия, адреса, контакты, цены и тексты придуманы исключительно для оформления, а любые совпадения с реальными местами и людьми случайны. Сайт не оказывает услуг, не принимает заказы и не собирает персональные данные, не является публичной офертой или рекламой.
+        </p>
+      </details>
     </div>
   </footer>
 </div>
